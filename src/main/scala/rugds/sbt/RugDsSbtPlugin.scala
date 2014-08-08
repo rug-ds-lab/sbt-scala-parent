@@ -76,8 +76,11 @@ trait SprayAkkaDependencies {
 }
 
 trait NotUsedDependencies {
-  val amqpClientV  = "1.4"
-  val amqpClient   = "com.github.sstone" %% "amqp-client" % amqpClientV withSources() withJavadoc()
+  val amqpClientV = "1.4"
+  val cassandraV  = "2.1.0-rc1"
+
+  val amqpClient = "com.github.sstone"      %% "amqp-client"           % amqpClientV withSources() withJavadoc()
+  val cassandra  = "com.datastax.cassandra" %  "cassandra-driver-core" % cassandraV  withSources() withJavadoc()
 }
 
 
