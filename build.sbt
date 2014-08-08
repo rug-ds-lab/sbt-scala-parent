@@ -4,7 +4,7 @@ name := "sbt-scala-parent"
 
 organization := "rugds"
 
-version := "0.0.2-2-SNAPSHOT"
+version := "0.0.3"
 
 scalaVersion := "2.10.4"
 
