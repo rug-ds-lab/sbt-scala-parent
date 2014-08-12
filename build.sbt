@@ -31,7 +31,7 @@ addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.4")
 
 
-// sbt-updates plugin needs it for correct work!
+// sbt-updates plugin needs it for correct work! - nope, it does not help, check other options!
 publishMavenStyle := true
 
 publishArtifact in Test := false
