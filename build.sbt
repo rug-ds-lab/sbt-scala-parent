@@ -28,8 +28,14 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6")
 
-
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.4")
+
+
+// sbt-updates plugin needs it for correct work!
+publishMavenStyle := true
+
+publishArtifact in Test := false
+
 
 releaseSettings
 

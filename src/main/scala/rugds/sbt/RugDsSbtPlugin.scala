@@ -102,6 +102,7 @@ trait CommonSettings {
     publishSetting,
     publishArtifact in (Compile, packageSrc) := false, // disable publishing the main sources jar
     publishArtifact in (Compile, packageDoc) := false, // disable publishing the main API jar
+    publishMavenStyle := true,
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     resolvers ++= repositories
   )
