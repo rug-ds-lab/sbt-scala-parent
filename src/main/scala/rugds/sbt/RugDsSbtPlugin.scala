@@ -3,7 +3,6 @@ package rugds.sbt
 import sbt.Keys._
 import sbt._
 
-
 trait Dependencies {
   // versions
   val junitV          = "4.11"
@@ -83,7 +82,6 @@ trait NotUsedDependencies {
   val cassandra  = "com.datastax.cassandra" %  "cassandra-driver-core" % cassandraV  withSources() withJavadoc()
 }
 
-
 trait CommonSettings {
   val nexus     = "http://sm4all-project.eu/nexus"
   val snapshots = nexus + "/content/repositories/rug.snapshot"
@@ -109,13 +107,13 @@ trait CommonSettings {
   )
 }
 
-trait Projects extends Dependencies with CommonSettings with SprayAkkaDependencies with NotUsedDependencies {
+trait Projects extends Dependencies with CommonSettings with SprayAkkaDependencies with NotUsedDependencies with ExternalSbtPluginsSettings {
   private def logDependency(includeLog: Boolean) = (if (includeLog) logViaLog4j else logViaLog4jTestOnly)
 
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
-    Project(name, file(basedir), settings = commonSettings ++ Seq(
-      libraryDependencies ++= dependencies
+    Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
+      libraryDependencies ++= finalDependencies
     ))
   }
 

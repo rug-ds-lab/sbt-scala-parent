@@ -1,4 +1,4 @@
-import com.timushev.sbt.updates.UpdatesKeys._
+import sbtrelease.ReleasePlugin.ReleaseKeys._
 
 name := "sbt-scala-parent"
 
@@ -28,6 +28,14 @@ publishArtifact in (Compile, packageDoc) := false
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6")
+
+
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.4")
+
+releaseSettings
+
+tagName <<= (version in ThisBuild) map (v => v)
 
 // to be removed later (there are some incomplete work below that will be (?) reused)
 
