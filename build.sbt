@@ -26,16 +26,18 @@ publishArtifact in (Compile, packageDoc) := false
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 
+// needed for play sbt plugin
+resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/releases"
+
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.3")
+
+
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.4")
 
 
-// sbt-updates plugin needs it for correct work! - nope, it does not help, check other options!
-publishMavenStyle := true
-
 publishArtifact in Test := false
-
 
 releaseSettings
 
