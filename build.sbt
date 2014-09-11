@@ -43,6 +43,8 @@ publishArtifact in Test := false
 
 releaseSettings
 
+aetherSettings
+
 tagName <<= (version in ThisBuild) map (v => v)
 
 // to be removed later (there are some incomplete work below that will be (?) reused)
