@@ -6,19 +6,13 @@ import sbt.Keys._
 import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleasePlugin.ReleaseKeys._
 
+import aether.Aether._
 
 trait ExternalSbtPluginsSettings {
-  val sbtReleaseV = "0.8.4"
-  val sbtUpdatesV = "0.1.6"
 
-//  val sbtRelease = "com.github.gseitz" % "sbt-release" % sbtReleaseV
-//  val sbtUpdates = "com.timushev.sbt"  % "sbt-updates" % sbtUpdatesV
-
-  val sbtReleaseSettings = /* addSbtPlugin(sbtRelease) ++ */ releaseSettings ++ (
+  val sbtReleaseSettings = releaseSettings ++ (
     tagName <<= (version in ThisBuild) map (v => v)
   )
 
-//  val sbtUpdatesSettings = addSbtPlugin(sbtUpdates)
-
-  val pluginSettings = sbtReleaseSettings //++ sbtUpdatesSettings
+  val pluginSettings = sbtReleaseSettings ++ aetherSettings
 }
