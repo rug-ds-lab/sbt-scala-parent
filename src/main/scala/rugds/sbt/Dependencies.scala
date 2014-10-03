@@ -7,23 +7,23 @@ trait Dependencies {
   // versions
   val junitV          = "4.11"
   val slf4jV          = "1.7.7"
-  val jodaTimeV       = "2.4"
+  val jodaTimeV       = "2.5"
   val jodaConvertV    = "1.7"
   val logbackV        = "1.1.2"
   val amqpClientV     = "1.4"
-  val cassandraV      = "2.1.0"
-  val akkaV           = "2.3.4"
+  val cassandraV      = "2.1.1"
+  val akkaV           = "2.3.6"
   val sprayV          = "1.3.1"
-  val sprayJsonV      = "1.2.6"
+  val sprayJsonV      = "1.3.0"
   val playV           = "2.3.4"
 
   val scalaV          = "2.11.2"
-  val specsV          = "2.4.2"
+  val specsV          = "2.4.6"
   val scalaTestV      = "2.2.2"
   val typesafeConfigV = "1.2.1"
   val grizzledLogV    = "1.0.2"
   val scalazV         = "7.1.0"
-  val scalaCheckV     = "1.11.5"
+  val scalaCheckV     = "1.11.6"
 
   // libraries
   val slf4j       = "org.slf4j" % "slf4j-api"    % slf4jV       withSources() withJavadoc()
