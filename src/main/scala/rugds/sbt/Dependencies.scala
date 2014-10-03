@@ -84,6 +84,7 @@ trait Repositories {
   )
 
   // external repositories
-  val sprayRepo    = "spray.io" at "http://repo.spray.io"
-  val typesafeRepo = "typesafe" at "http://repo.typesafe.com/typesafe/releases"
+  val sprayRepo    = "spray.io"            at "http://repo.spray.io"
+  val typesafeRepo = "typesafe"            at "http://repo.typesafe.com/typesafe/releases"
+  val scalazRepo   = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 }
