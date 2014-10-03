@@ -25,6 +25,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
+      resolvers += typesafeRepo,
       libraryDependencies ++= finalDependencies
     ))
   }
@@ -35,9 +36,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   def sprayProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, sprayDependencies, includeLog) settings {
     resolvers += sprayRepo
   }
-  def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, Seq.empty[ModuleID], includeLog).settings (
-    resolvers += typesafeRepo
-  ).enablePlugins(PlayScala)
+  def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, Seq.empty[ModuleID], includeLog).enablePlugins(PlayScala)
 }
 
 object RugDsSbtPlugin extends AutoPlugin
