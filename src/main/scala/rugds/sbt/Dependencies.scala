@@ -13,7 +13,7 @@ trait Dependencies {
   val amqpClientV     = "1.4"
   val cassandraV      = "2.1.1"
   val akkaV           = "2.3.6"
-  val sprayV          = "1.3.1"
+  val sprayV          = "1.3.2"
   val sprayJsonV      = "1.3.0"
   val playV           = "2.3.4"
 
