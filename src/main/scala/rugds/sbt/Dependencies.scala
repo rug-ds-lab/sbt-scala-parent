@@ -11,11 +11,11 @@ trait Dependencies {
   val jodaConvertV    = "1.7"
   val logbackV        = "1.1.2"
   val amqpClientV     = "1.4"
-  val cassandraV      = "2.1.1"
+  val cassandraV      = "2.1.2"
   val akkaV           = "2.3.6"
   val sprayV          = "1.3.2"
   val sprayJsonV      = "1.3.0"
-  val playV           = "2.3.4"
+  val playV           = "2.3.5"
   val sshV            = "0.7.0"
 
   val scalaV          = "2.11.3"
