@@ -16,6 +16,7 @@ trait Dependencies {
   val sprayV          = "1.3.2"
   val sprayJsonV      = "1.3.0"
   val playV           = "2.3.4"
+  val sshV            = "0.7.0"
 
   val scalaV          = "2.11.3"
   val specsV          = "2.4.6"
@@ -32,6 +33,7 @@ trait Dependencies {
 
   val amqpClient = "com.github.sstone"      %% "amqp-client"           % amqpClientV withSources() withJavadoc()
   val cassandra  = "com.datastax.cassandra" %  "cassandra-driver-core" % cassandraV  withSources() withJavadoc()
+  val ssh        = "com.decodified"         %% "scala-ssh"             % sshV        withSources() withJavadoc()
 
   val akkaActor    = "com.typesafe.akka" %% "akka-actor"        % akkaV       withSources() withJavadoc()
   val akkaSlf4j    = "com.typesafe.akka" %% "akka-slf4j"        % akkaV       withSources() withJavadoc()
