@@ -17,7 +17,7 @@ trait Dependencies {
   val sprayJsonV      = "1.3.0"
   val playV           = "2.3.4"
 
-  val scalaV          = "2.11.2"
+  val scalaV          = "2.11.3"
   val specsV          = "2.4.6"
   val scalaTestV      = "2.2.2"
   val typesafeConfigV = "1.2.1"
