@@ -24,7 +24,6 @@ trait ExternalSbtPluginsSettings {
       version,
       scalaVersion,
       sbtVersion,
-      buildInfoBuildNumber,
       BuildInfoKey.action("buildTime") {
         System.currentTimeMillis
       }
