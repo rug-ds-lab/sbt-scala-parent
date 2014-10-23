@@ -51,7 +51,7 @@ buildInfoSettings
 
 sourceGenerators in Compile <+= buildInfo
 
-buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion, sbtVersion, buildInfoBuildNumber, BuildInfoKey.action("buildTime") { System.currentTimeMillis })
+buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion, sbtVersion, BuildInfoKey.action("buildTime") { System.currentTimeMillis })
 
 buildInfoPackage <<= name { _.replace("-", "") }
 
