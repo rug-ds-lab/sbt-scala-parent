@@ -36,6 +36,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   )
   def javaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, javaOnly,          includeLog)
   def scalaProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, scalaBasic,        includeLog)
+  def akkaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, akkaDependencies,  includeLog)
   def sprayProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, sprayDependencies, includeLog) settings {
     resolvers += sprayRepo
   }
