@@ -17,6 +17,7 @@ trait Dependencies {
   val sprayJsonV      = "1.3.0"
   val playV           = "2.3.4"
   val sshV            = "0.7.0"
+  val zkV             = "3.4.6"
 
   val scalaV          = "2.11.3"
   val specsV          = "2.4.8"
@@ -34,6 +35,8 @@ trait Dependencies {
   val amqpClient = "com.github.sstone"      %% "amqp-client"           % amqpClientV withSources() withJavadoc()
   val cassandra  = "com.datastax.cassandra" %  "cassandra-driver-core" % cassandraV  withSources() withJavadoc()
   val ssh        = "com.decodified"         %% "scala-ssh"             % sshV        withSources() withJavadoc()
+  val zk         = "org.apache.zookeeper" %  "zookeeper"               % zkV         withSources() withJavadoc()
+  val zkExcluded = zk exclude("org.slf4j", "slf4j-log4j12") exclude("javax.mail", "mail") exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri")
 
   val akkaActor    = "com.typesafe.akka" %% "akka-actor"        % akkaV       withSources() withJavadoc()
   val akkaSlf4j    = "com.typesafe.akka" %% "akka-slf4j"        % akkaV       withSources() withJavadoc()
