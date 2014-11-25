@@ -20,7 +20,7 @@ trait Dependencies {
   val zkV             = "3.4.6"
 
   val scalaV          = "2.11.4"
-  val specsV          = "2.4.11"
+  val specsV          = "2.4.12"
   val scalaTestV      = "2.2.2"
   val typesafeConfigV = "1.2.1"
   val grizzledLogV    = "1.0.2"
