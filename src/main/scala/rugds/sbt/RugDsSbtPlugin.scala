@@ -1,5 +1,6 @@
 package rugds.sbt
 
+import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 import play.PlayScala
 import sbt.Keys._
 import sbt._
@@ -9,8 +10,11 @@ trait CommonSettings {
   this: Repositories =>
 
   val commonSettings = Seq(
-    organization := "rugds",
-    scalaVersion := scalaV,
+    organization  := "rugds",
+    javacOptions ++= Seq("-source", "1.7", "-target", "1.7"),
+    javacOptions in doc := Seq("-source", "1.7"),
+    scalacOptions += "-target:jvm-1.7",  // enforce java7 in scala
+    scalaVersion  := scalaV,
     publishSetting,
     publishArtifact in (Compile, packageSrc) := false, // disable publishing the main sources jar
     publishArtifact in (Compile, packageDoc) := false, // disable publishing the main API jar
@@ -27,7 +31,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
       resolvers ++= Seq(typesafeRepo, scalazRepo),
       libraryDependencies ++= finalDependencies
-    ))
+    )).enablePlugins(JavaAppPackaging)
   }
 
   def mainProject = genericProject("root", ".", Seq(), false) settings (
