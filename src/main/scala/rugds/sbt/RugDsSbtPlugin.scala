@@ -45,6 +45,11 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
     resolvers += sprayRepo
   }
   def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, Seq.empty[ModuleID], includeLog).enablePlugins(PlayScala)
+
+
+  def defineProject(projectType: (String, String, Boolean) => Project, projectName: String, includeLog: Boolean = false) = {
+    projectType(projectName, projectName, includeLog)
+  }
 }
 
 object RugDsSbtPlugin extends AutoPlugin
