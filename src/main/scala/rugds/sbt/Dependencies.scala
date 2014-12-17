@@ -10,14 +10,12 @@ trait Dependencies {
   val jodaTimeV       = "2.5"
   val jodaConvertV    = "1.7"
   val logbackV        = "1.1.2"
-  val amqpClientV     = "1.4"
-  val cassandraV      = "2.1.3"
+
   val akkaV           = "2.3.7"
   val sprayV          = "1.3.2"
   val sprayJsonV      = "1.3.1"
   val playV           = "2.3.4"
   val sshV            = "0.7.0"
-  val zkV             = "3.4.6"
 
   val scalaV          = "2.11.4"
   val specsV          = "2.4.12"
@@ -32,11 +30,7 @@ trait Dependencies {
   val jodaTime    = "joda-time" % "joda-time"    % jodaTimeV    withSources() withJavadoc()
   val jodaConvert = "org.joda"  % "joda-convert" % jodaConvertV withSources() withJavadoc()
 
-  val amqpClient = "com.github.sstone"      %% "amqp-client"           % amqpClientV withSources() withJavadoc()
-  val cassandra  = "com.datastax.cassandra" %  "cassandra-driver-core" % cassandraV  withSources() withJavadoc()
-  val ssh        = "com.decodified"         %% "scala-ssh"             % sshV        withSources() withJavadoc()
-  val zk         = "org.apache.zookeeper" %  "zookeeper"               % zkV         withSources() withJavadoc()
-  val zkExcluded = zk exclude("org.slf4j", "slf4j-log4j12") exclude("javax.mail", "mail") exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri")
+  val ssh        = "com.decodified"      %% "scala-ssh"         % sshV        withSources() withJavadoc()
 
   val akkaActor    = "com.typesafe.akka" %% "akka-actor"        % akkaV       withSources() withJavadoc()
   val akkaSlf4j    = "com.typesafe.akka" %% "akka-slf4j"        % akkaV       withSources() withJavadoc()

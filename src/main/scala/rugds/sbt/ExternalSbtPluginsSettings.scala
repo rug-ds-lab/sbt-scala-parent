@@ -10,6 +10,10 @@ import aether.Aether._
 
 import sbtbuildinfo.Plugin._
 
+import com.typesafe.sbt.SbtNativePackager._
+import com.typesafe.sbt.packager.Keys._
+
+
 trait ExternalSbtPluginsSettings {
 
   val sbtReleaseSettings = releaseSettings ++ (
@@ -31,5 +35,11 @@ trait ExternalSbtPluginsSettings {
     buildInfoPackage <<= name { _.replace("-", "") }
   )
 
-  val pluginSettings = sbtReleaseSettings ++ aetherSettings ++ sbtBuildInfoSettings
+  val nativePackagerSettings = Seq (
+    maintainer in Docker := "RuG Distributed Systems <rug.ds.dev@gmail.com>",
+    dockerBaseImage      := "dockerfile/java",
+    dockerExposedVolumes in Docker := Seq("/opt/docker/logs")
+  )
+
+  val pluginSettings = sbtReleaseSettings ++ aetherSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
 }
