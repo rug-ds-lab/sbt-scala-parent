@@ -14,7 +14,7 @@ trait Dependencies {
   val akkaV           = "2.3.9"
   val sprayV          = "1.3.2"
   val sprayJsonV      = "1.3.1"
-  val playV           = "2.3.4"
+  val playV           = "2.3.8"
   val sshV            = "0.7.0"
 
   val scalaV          = "2.11.5"

@@ -29,18 +29,18 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 // needed for play sbt plugin
 resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/releases"
 
-addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.4")
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.8")
 
 
 addSbtPlugin("no.arktekk.sbt" % "aether-deploy" % "0.13")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.8")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.5")
 
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.3.2")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.0-M1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.0-RC1")
 
 
 publishArtifact in Test := false
