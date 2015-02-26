@@ -22,7 +22,7 @@ trait Dependencies {
   val scalaTestV      = "2.2.4"
   val typesafeConfigV = "1.2.1"
   val grizzledLogV    = "1.0.2"
-  val scalazV         = "7.1.0"
+  val scalazV         = "7.1.1"
   val scalaCheckV     = "1.12.2"
 
   // libraries
