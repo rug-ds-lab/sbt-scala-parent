@@ -1,12 +1,13 @@
 import sbtrelease.ReleasePlugin.ReleaseKeys._
 
-name := "sbt-scala-parent"
-
-organization := "rugds"
-
-scalaVersion := "2.10.4"
-
-sbtPlugin := true
+lazy val sbtScalaParentProject = (project in file(".")).
+  enablePlugins(BuildInfoPlugin).
+  settings(
+    name := "sbt-scala-parent",
+    organization := "rugds",
+    scalaVersion := "2.10.4",
+    sbtPlugin := true
+  )
 
 
 val nexus     = "http://sm4all-project.eu/nexus"
