@@ -4,6 +4,7 @@ import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 import play.PlayScala
 import sbt.Keys._
 import sbt._
+import sbtbuildinfo.BuildInfoPlugin
 
 
 trait CommonSettings {
@@ -29,9 +30,9 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
-      resolvers ++= Seq(typesafeRepo, scalazRepo),
+      resolvers ++= Seq(typesafeRepo),
       libraryDependencies ++= finalDependencies
-    )).enablePlugins(JavaAppPackaging)
+    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin)
   }
 
   def mainProject = genericProject("root", ".", Seq(), false) settings (

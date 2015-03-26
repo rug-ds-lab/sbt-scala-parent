@@ -20,8 +20,7 @@ trait ExternalSbtPluginsSettings {
     tagName <<= (version in ThisBuild) map (v => v)
   )
 
-  val sbtBuildInfoSettings = buildInfoSettings ++ Seq (
-    sourceGenerators in Compile <+= buildInfo,
+  val sbtBuildInfoSettings = Seq (
     buildInfoKeys := Seq[BuildInfoKey](
       name,
       organization,
