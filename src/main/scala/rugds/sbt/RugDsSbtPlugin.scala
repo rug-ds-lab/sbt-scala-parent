@@ -30,7 +30,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
-      resolvers ++= Seq(typesafeRepo),
+      resolvers ++= Seq(typesafeRepo, scalazRepo),
       libraryDependencies ++= finalDependencies
     )).enablePlugins(JavaAppPackaging, BuildInfoPlugin)
   }
