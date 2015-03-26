@@ -9,7 +9,7 @@ trait Dependencies {
   val slf4jV          = "1.7.10"
   val jodaTimeV       = "2.7"
   val jodaConvertV    = "1.7"
-  val logbackV        = "1.1.2"
+  val logbackV        = "1.1.3"
 
   val akkaV           = "2.3.9"
   val sprayV          = "1.3.2"
@@ -17,7 +17,8 @@ trait Dependencies {
   val playV           = "2.3.8"
   val sshV            = "0.7.0"
 
-  val scalaV          = "2.11.5"
+  val javaV           = "1.7"
+  val scalaV          = "2.11.6"
   val specsV          = "2.4.16"
   val scalaTestV      = "2.2.4"
   val typesafeConfigV = "1.2.1"
@@ -48,7 +49,6 @@ trait Dependencies {
 
   val typesafeConfig = "com.typesafe" %  "config"         % typesafeConfigV withSources() withJavadoc()
   val grizzledLog    = "org.clapper"  %% "grizzled-slf4j" % grizzledLogV    withSources() withJavadoc()
-  val scalaz         = "org.scalaz"   %% "scalaz-core"    % scalazV         withSources() withJavadoc()
 
   // play sbt plugin
   val playPlugin = "com.typesafe.play" %  "sbt-plugin"  % playV  withSources() withJavadoc()
@@ -63,7 +63,7 @@ trait Dependencies {
   val logViaLog4j         = Seq(logbackClassic, logbackCore, jclOverSlf4j, log4jOverSlf4j)
   val logViaLog4jTestOnly = logViaLog4j map (_ % Test)
   val javaOnly            = Seq(slf4j, jodaTime, jodaConvert, junit)
-  val scalaBasic          = javaOnly         ++ Seq(typesafeConfig, grizzledLog, scalaz, specs, scalaTest, scalaCheck)
+  val scalaBasic          = javaOnly         ++ Seq(typesafeConfig, grizzledLog, specs, scalaTest, scalaCheck)
   val akkaDependencies    = scalaBasic       ++ Seq(akkaActor, akkaSlf4j)
   val sprayDependencies   = akkaDependencies ++ Seq(sprayCan, sprayClient, sprayRouting, sprayHttpx, sprayIO, sprayJson)
 }
@@ -85,5 +85,4 @@ trait Repositories {
   // external repositories
   val sprayRepo    = "spray.io"            at "http://repo.spray.io"
   val typesafeRepo = "typesafe"            at "http://repo.typesafe.com/typesafe/releases"
-  val scalazRepo   = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 }
