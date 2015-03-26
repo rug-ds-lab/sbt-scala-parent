@@ -2,13 +2,12 @@ package rugds.sbt
 
 import sbt._
 import sbt.Keys._
+import sbtbuildinfo.BuildInfoPlugin.autoImport._
 
 import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleasePlugin.ReleaseKeys._
 
 import aether.Aether._
-
-import sbtbuildinfo.Plugin._
 
 import com.typesafe.sbt.SbtNativePackager._
 import com.typesafe.sbt.packager.Keys._
