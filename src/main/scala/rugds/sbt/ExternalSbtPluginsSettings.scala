@@ -7,8 +7,6 @@ import sbtbuildinfo.BuildInfoPlugin.autoImport._
 import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleasePlugin.ReleaseKeys._
 
-import aether.Aether._
-
 import com.typesafe.sbt.SbtNativePackager._
 import com.typesafe.sbt.packager.Keys._
 
@@ -39,5 +37,5 @@ trait ExternalSbtPluginsSettings {
     dockerExposedVolumes in Docker := Seq("/opt/docker/logs")
   )
 
-  val pluginSettings = sbtReleaseSettings ++ aetherSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
+  val pluginSettings = sbtReleaseSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
 }
