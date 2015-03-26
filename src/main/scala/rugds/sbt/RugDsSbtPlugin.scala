@@ -11,9 +11,9 @@ trait CommonSettings {
 
   val commonSettings = Seq(
     organization  := "rugds",
-    javacOptions ++= Seq("-source", "1.7", "-target", "1.7"),
-    javacOptions in doc := Seq("-source", "1.7"),
-    scalacOptions += "-target:jvm-1.7",  // enforce java7 in scala
+    javacOptions ++= Seq("-source", s"$javaV", "-target", s"$javaV"),
+    javacOptions in doc := Seq("-source", s"$javaV"),
+    scalacOptions += s"-target:jvm-$javaV",  // enforce java7 in scala
     scalaVersion  := scalaV,
     publishSetting,
     publishArtifact in (Compile, packageSrc) := false, // disable publishing the main sources jar
