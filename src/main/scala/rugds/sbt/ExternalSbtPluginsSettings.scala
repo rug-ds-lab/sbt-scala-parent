@@ -27,7 +27,9 @@ trait ExternalSbtPluginsSettings {
         System.currentTimeMillis
       }
     ),
-    buildInfoPackage <<= name { _.replace("-", "") }
+    buildInfoPackage <<= name { _.replace("-", "") },
+    buildInfoOptions += BuildInfoOption.ToMap,
+    buildInfoOptions += BuildInfoOption.ToJson
   )
 
   val nativePackagerSettings = Seq (
