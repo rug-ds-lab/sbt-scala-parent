@@ -4,8 +4,7 @@ import sbt._
 import sbt.Keys._
 import sbtbuildinfo.BuildInfoPlugin.autoImport._
 
-import sbtrelease.ReleasePlugin._
-import sbtrelease.ReleasePlugin.ReleaseKeys._
+import sbtrelease.ReleasePlugin.autoImport.releaseTagName
 
 import com.typesafe.sbt.SbtNativePackager._
 import com.typesafe.sbt.packager.Keys._
@@ -13,8 +12,8 @@ import com.typesafe.sbt.packager.Keys._
 
 trait ExternalSbtPluginsSettings {
 
-  val sbtReleaseSettings = releaseSettings ++ (
-    tagName <<= (version in ThisBuild) map (v => v)
+  val sbtReleaseSettings = (
+    releaseTagName <<= (version in ThisBuild) map (v => v)
   )
 
   val sbtBuildInfoSettings = Seq (
@@ -33,7 +32,7 @@ trait ExternalSbtPluginsSettings {
 
   val nativePackagerSettings = Seq (
     maintainer in Docker := "RuG Distributed Systems <rug.ds.dev@gmail.com>",
-    dockerBaseImage      := "dockerfile/java",
+    dockerBaseImage      := "java:latest",
     dockerExposedVolumes in Docker := Seq("/opt/docker/logs")
   )
 
