@@ -1,5 +1,3 @@
-import sbtrelease.ReleasePlugin.ReleaseKeys._
-
 lazy val sbtScalaParentProject = (project in file(".")).
   enablePlugins(BuildInfoPlugin).
   settings(
@@ -33,21 +31,19 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 // needed for play sbt plugin
 resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/releases"
 
-addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.8")
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.9")
 
 
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.8")
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.5")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.1")
 
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.4.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.0-RC1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.2")
 
 
 publishArtifact in Test := false
 
-releaseSettings
 
-
-tagName <<= (version in ThisBuild) map (v => v)
+releaseTagName <<= (version in ThisBuild) map (v => v)

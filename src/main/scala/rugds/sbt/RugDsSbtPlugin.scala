@@ -5,6 +5,7 @@ import play.PlayScala
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin
+import sbtrelease.ReleasePlugin
 
 
 trait CommonSettings {
@@ -14,7 +15,7 @@ trait CommonSettings {
     organization  := "rugds",
     javacOptions ++= Seq("-source", s"$javaV", "-target", s"$javaV"),
     javacOptions in doc := Seq("-source", s"$javaV"),
-    scalacOptions += s"-target:jvm-$javaV",  // enforce java7 in scala
+    scalacOptions += s"-target:jvm-$javaV",  // enforce java8 in scala
     scalaVersion  := scalaV,
     publishSetting,
     publishArtifact in (Compile, packageSrc) := false, // disable publishing the main sources jar
@@ -32,7 +33,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
       resolvers ++= Seq(typesafeRepo, scalazRepo),
       libraryDependencies ++= finalDependencies
-    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin)
+    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin)
   }
 
   def mainProject = genericProject("root", ".", Seq(), false) settings (
