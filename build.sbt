@@ -30,13 +30,9 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // needed for play sbt plugin
 resolvers ++= Seq (
-	"typesafe"            at "http://repo.typesafe.com/typesafe/releases",
+  "typesafe"            at "http://repo.typesafe.com/typesafe/releases",
   "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 )
-
-// for some reason this dependency cannot be resolved automatically, we provide it explicitly
-// required by play -> specs -> scalaz-stream
-libraryDependencies += "org.scalaz.stream" %% "scalaz-stream" % "0.7a"
 
 addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.3.9")
 
