@@ -54,16 +54,17 @@ trait Dependencies {
   val playPlugin = "com.typesafe.play" %  "sbt-plugin"  % playV  withSources() withJavadoc()
 
   // test libraries
-  val junit      = "junit"          %  "junit"      % junitV      % Test withSources() withJavadoc()
-  val specs      = "org.specs2"     %% "specs2"     % specsV      % Test withSources() withJavadoc()
-  val scalaTest  = "org.scalatest"  %% "scalatest"  % scalaTestV  % Test withSources() withJavadoc()
-  val scalaCheck = "org.scalacheck" %% "scalacheck" % scalaCheckV % Test withSources() withJavadoc()
+  val junit      = "junit"          %  "junit"        % junitV      % Test withSources() withJavadoc()
+  val specs      = "org.specs2"     %% "specs2-core"  % specsV      % Test withSources() withJavadoc()
+  val specsJUnit = "org.specs2"     %% "specs2-junit" % specsV      % Test withSources() withJavadoc()
+  val scalaTest  = "org.scalatest"  %% "scalatest"    % scalaTestV  % Test withSources() withJavadoc()
+  val scalaCheck = "org.scalacheck" %% "scalacheck"   % scalaCheckV % Test withSources() withJavadoc()
 
   // aggregated dependencies
   val logViaLog4j         = Seq(logbackClassic, logbackCore, jclOverSlf4j, log4jOverSlf4j)
   val logViaLog4jTestOnly = logViaLog4j map (_ % Test)
   val javaOnly            = Seq(slf4j, jodaTime, jodaConvert, junit)
-  val scalaBasic          = javaOnly         ++ Seq(typesafeConfig, grizzledLog, specs, scalaTest, scalaCheck)
+  val scalaBasic          = javaOnly         ++ Seq(typesafeConfig, grizzledLog, specs, specsJUnit, scalaTest, scalaCheck)
   val akkaDependencies    = scalaBasic       ++ Seq(akkaActor, akkaSlf4j)
   val sprayDependencies   = akkaDependencies ++ Seq(sprayCan, sprayClient, sprayRouting, sprayHttpx, sprayIO, sprayJson)
 }
