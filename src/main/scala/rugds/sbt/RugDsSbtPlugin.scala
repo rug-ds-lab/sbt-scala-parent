@@ -15,7 +15,10 @@ trait CommonSettings {
     organization  := "rugds",
     javacOptions ++= Seq("-source", s"$javaV", "-target", s"$javaV"),
     javacOptions in doc := Seq("-source", s"$javaV"),
-    scalacOptions += s"-target:jvm-$javaV",  // enforce java8 in scala
+    scalacOptions ++= Seq(
+      s"-target:jvm-$javaV", // enforce java8 in scala
+      "-deprecation"
+    ),
     scalaVersion  := scalaV,
     publishSetting,
     publishArtifact in (Compile, packageSrc) := false, // disable publishing the main sources jar
