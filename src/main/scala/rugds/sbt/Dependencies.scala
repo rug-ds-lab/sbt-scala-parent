@@ -7,7 +7,7 @@ trait Dependencies {
   // versions
   val junitV          = "4.12"
   val slf4jV          = "1.7.12"
-  val jodaTimeV       = "2.7"
+  val jodaTimeV       = "2.8.1"
   val jodaConvertV    = "1.7"
   val logbackV        = "1.1.3"
 
@@ -18,8 +18,8 @@ trait Dependencies {
   val sshV            = "0.7.0"
 
   val javaV           = "1.8"
-  val scalaV          = "2.11.6"
-  val specsV          = "3.6"
+  val scalaV          = "2.11.7"
+  val specsV          = "3.6.2"
   val scalaTestV      = "2.2.5"
   val typesafeConfigV = "1.3.0"
   val grizzledLogV    = "1.0.2"
@@ -27,38 +27,38 @@ trait Dependencies {
   val scalaCheckV     = "1.12.3"
 
   // libraries
-  val slf4j       = "org.slf4j" % "slf4j-api"    % slf4jV       withSources() withJavadoc()
-  val jodaTime    = "joda-time" % "joda-time"    % jodaTimeV    withSources() withJavadoc()
-  val jodaConvert = "org.joda"  % "joda-convert" % jodaConvertV withSources() withJavadoc()
+  val slf4j       = "org.slf4j" % "slf4j-api"    % slf4jV       
+  val jodaTime    = "joda-time" % "joda-time"    % jodaTimeV    
+  val jodaConvert = "org.joda"  % "joda-convert" % jodaConvertV 
 
-  val ssh        = "com.decodified"      %% "scala-ssh"         % sshV        withSources() withJavadoc()
+  val ssh        = "com.decodified"      %% "scala-ssh"         % sshV        
 
-  val akkaActor    = "com.typesafe.akka" %% "akka-actor"        % akkaV       withSources() withJavadoc()
-  val akkaSlf4j    = "com.typesafe.akka" %% "akka-slf4j"        % akkaV       withSources() withJavadoc()
-  val sprayClient  = "io.spray"          %% "spray-client"      % sprayV      withSources() withJavadoc()
-  val sprayCan     = "io.spray"          %% "spray-can"         % sprayV      withSources() withJavadoc()
-  val sprayRouting = "io.spray"          %% "spray-routing"     % sprayV      withSources() withJavadoc()
-  val sprayHttpx   = "io.spray"          %% "spray-httpx"       % sprayV      withSources() withJavadoc()
-  val sprayIO      = "io.spray"          %% "spray-io"          % sprayV      withSources() withJavadoc()
-  val sprayJson    = "io.spray"          %% "spray-json"        % sprayJsonV  withSources() withJavadoc()
+  val akkaActor    = "com.typesafe.akka" %% "akka-actor"        % akkaV       
+  val akkaSlf4j    = "com.typesafe.akka" %% "akka-slf4j"        % akkaV       
+  val sprayClient  = "io.spray"          %% "spray-client"      % sprayV      
+  val sprayCan     = "io.spray"          %% "spray-can"         % sprayV      
+  val sprayRouting = "io.spray"          %% "spray-routing"     % sprayV      
+  val sprayHttpx   = "io.spray"          %% "spray-httpx"       % sprayV      
+  val sprayIO      = "io.spray"          %% "spray-io"          % sprayV      
+  val sprayJson    = "io.spray"          %% "spray-json"        % sprayJsonV  
 
-  val logbackClassic = "ch.qos.logback" % "logback-classic"  % logbackV withSources() withJavadoc()
-  val logbackCore    = "ch.qos.logback" % "logback-core"     % logbackV withSources() withJavadoc()
-  val jclOverSlf4j   = "org.slf4j"      % "jcl-over-slf4j"   % slf4jV   withSources() withJavadoc()
-  val log4jOverSlf4j = "org.slf4j"      % "log4j-over-slf4j" % slf4jV   withSources() withJavadoc()
+  val logbackClassic = "ch.qos.logback" % "logback-classic"  % logbackV 
+  val logbackCore    = "ch.qos.logback" % "logback-core"     % logbackV 
+  val jclOverSlf4j   = "org.slf4j"      % "jcl-over-slf4j"   % slf4jV   
+  val log4jOverSlf4j = "org.slf4j"      % "log4j-over-slf4j" % slf4jV   
 
-  val typesafeConfig = "com.typesafe" %  "config"         % typesafeConfigV withSources() withJavadoc()
-  val grizzledLog    = "org.clapper"  %% "grizzled-slf4j" % grizzledLogV    withSources() withJavadoc()
+  val typesafeConfig = "com.typesafe" %  "config"         % typesafeConfigV 
+  val grizzledLog    = "org.clapper"  %% "grizzled-slf4j" % grizzledLogV    
 
   // play sbt plugin
-  val playPlugin = "com.typesafe.play" %  "sbt-plugin"  % playV  withSources() withJavadoc()
+  val playPlugin = "com.typesafe.play" %  "sbt-plugin"  % playV  
 
   // test libraries
-  val junit      = "junit"          %  "junit"        % junitV      % Test withSources() withJavadoc()
-  val specs      = "org.specs2"     %% "specs2-core"  % specsV      % Test withSources() withJavadoc()
-  val specsJUnit = "org.specs2"     %% "specs2-junit" % specsV      % Test withSources() withJavadoc()
-  val scalaTest  = "org.scalatest"  %% "scalatest"    % scalaTestV  % Test withSources() withJavadoc()
-  val scalaCheck = "org.scalacheck" %% "scalacheck"   % scalaCheckV % Test withSources() withJavadoc()
+  val junit      = "junit"          %  "junit"        % junitV      % Test 
+  val specs      = "org.specs2"     %% "specs2-core"  % specsV      % Test 
+  val specsJUnit = "org.specs2"     %% "specs2-junit" % specsV      % Test 
+  val scalaTest  = "org.scalatest"  %% "scalatest"    % scalaTestV  % Test 
+  val scalaCheck = "org.scalacheck" %% "scalacheck"   % scalaCheckV % Test 
 
   // aggregated dependencies
   val logViaLog4j         = Seq(logbackClassic, logbackCore, jclOverSlf4j, log4jOverSlf4j)
