@@ -3,7 +3,7 @@ lazy val sbtScalaParentProject = (project in file(".")).
   settings(
     name := "sbt-scala-parent",
     organization := "rugds",
-    scalaVersion := "2.10.4",
+    scalaVersion := "2.10.5",
     sbtPlugin := true,
 
     // buildinfo plugin
