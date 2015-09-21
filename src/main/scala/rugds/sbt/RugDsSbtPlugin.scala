@@ -31,7 +31,7 @@ trait CommonSettings {
 trait Projects extends Dependencies with Repositories with CommonSettings with ExternalSbtPluginsSettings {
   private def logDependency(includeLog: Boolean) = if (includeLog) logViaLog4j else logViaLog4jTestOnly
 
-  private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
+  def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
     Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
       resolvers ++= Seq(typesafeRepo, scalazRepo),
