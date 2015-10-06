@@ -8,13 +8,13 @@ trait Dependencies {
   val junitV          = "4.12"
   val slf4jV          = "1.7.12"
   val jodaTimeV       = "2.8.2"
-  val jodaConvertV    = "1.7"
+  val jodaConvertV    = "1.8.1"
   val logbackV        = "1.1.3"
 
-  val akkaV           = "2.3.13"
+  val akkaV           = "2.4.0"
   val sprayV          = "1.3.3"
   val sprayJsonV      = "1.3.2"
-  val playV           = "2.3.8"
+  val playV           = "2.4.3"
   val sshV            = "0.7.0"
 
   val javaV           = "1.8"
