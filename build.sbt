@@ -34,16 +34,16 @@ resolvers ++= Seq (
   "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 )
 
-addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.4.3")
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.4.4")
 
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.9")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.10")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.1")
 
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.5.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.4")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.5")
 
 
 publishArtifact in Test := false
