@@ -11,7 +11,7 @@ trait Dependencies {
   val jodaConvertV    = "1.8.1"
   val logbackV        = "1.1.3"
 
-  val akkaV           = "2.4.0"
+  val akkaV           = "2.4.1"
   val sprayV          = "1.3.3"
   val sprayJsonV      = "1.3.2"
   val playV           = "2.4.4"
@@ -19,8 +19,8 @@ trait Dependencies {
 
   val javaV           = "1.8"
   val scalaV          = "2.11.7"
-  val specsV          = "3.6.5"
-  val scalaTestV      = "2.2.5"
+  val specsV          = "3.7"
+  val scalaTestV      = "2.2.6"
   val typesafeConfigV = "1.3.0"
   val grizzledLogV    = "1.0.2"
   val scalazV         = "7.1.2"
