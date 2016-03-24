@@ -1,7 +1,7 @@
 package rugds.sbt
 
 import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
-import play.PlayScala
+import play.sbt.PlayScala
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin
@@ -17,7 +17,12 @@ trait CommonSettings {
     javacOptions in doc := Seq("-source", s"$javaV"),
     scalacOptions ++= Seq(
       s"-target:jvm-$javaV", // enforce java8 in scala
-      "-deprecation"
+      "-deprecation",
+      "-encoding", "UTF-8",
+      "-feature",    // warning and location for usages of features that should be imported explicitly
+      "-unchecked",  // additional warnings where generated code depends on assumptions
+      "-Xlint",      // recommended additional warnings
+      "-Xcheckinit"  // runtime error when a val is not initialized due to trait hierarchies (instead of NPE somewhere else)
     ),
     scalaVersion  := scalaV,
     publishSetting,
@@ -46,10 +51,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
   def javaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, javaOnly,          includeLog)
   def scalaProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, scalaBasic,        includeLog)
   def akkaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, akkaDependencies,  includeLog)
-  def sprayProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, sprayDependencies, includeLog) settings {
-    resolvers += sprayRepo
-  }
-  def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, Seq.empty[ModuleID], includeLog).enablePlugins(PlayScala)
+  def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = scalaProject  (name, basedir, includeLog).enablePlugins(PlayScala)
 
 
   def defineProject(projectType: (String, String, Boolean) => Project, projectName: String, includeLog: Boolean = false) = {
