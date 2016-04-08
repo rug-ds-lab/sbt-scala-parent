@@ -12,19 +12,19 @@ lazy val sbtScalaParentProject = (project in file(".")).
   )
 
 
-val nexus     = "http://sm4all-project.eu/nexus"
-val snapshots = nexus + "/content/repositories/rug.snapshot"
-val releases  = nexus + "/content/repositories/rug.release"
+val nexus     = "http://nexus.distributedsystems.nl"
+val snapshots = nexus + "/repository/rugds.snapshot.oss/"
+val releases  = nexus + "/repository/rugds.release.oss"
 
 publishTo <<= version { (v: String) =>
   if (v.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
 }
 
 // disable publishing the main sources jar
-publishArtifact in (Compile, packageSrc) := false
+publishArtifact in (Compile, packageSrc) := true
 
 // disable publishing the main API jar
-publishArtifact in (Compile, packageDoc) := false
+publishArtifact in (Compile, packageDoc) := true
 
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
