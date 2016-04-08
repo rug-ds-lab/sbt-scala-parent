@@ -14,8 +14,8 @@ lazy val sbtScalaParentProject = (project in file(".")).
 
 val nexus     = "http://nexus.distributedsystems.nl"
 
-val snapshots = nexus + "/repository/rugds.snapshot.oss"
-val releases  = nexus + "/repository/rugds.release.oss"
+val snapshots = nexus + "/repository/rugds.snapshot.oss/"
+val releases  = nexus + "/repository/rugds.release.oss/"
 
 publishTo <<= version { (v: String) =>
   if (v.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
