@@ -6,5 +6,3 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.6.1")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.6")
-
-addSbtPlugin("no.arktekk.sbt" % "aether-deploy" % "0.17")
