@@ -27,6 +27,8 @@ publishArtifact in (Compile, packageSrc) := true
 // disable publishing the main API jar
 publishArtifact in (Compile, packageDoc) := true
 
+publishMavenStyle := true
+
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // needed for play sbt plugin
