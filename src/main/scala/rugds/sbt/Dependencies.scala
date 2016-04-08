@@ -57,9 +57,10 @@ trait Dependencies {
 }
 
 trait Repositories {
-  val nexus     = "http://sm4all-project.eu/nexus"
-  val snapshots = nexus + "/content/repositories/rug.snapshot"
-  val releases  = nexus + "/content/repositories/rug.release"
+
+  val nexus     = "http://nexus.distributedsystems.nl"
+  val snapshots = nexus + "/repository/rugds.snapshot.private"
+  val releases  = nexus + "/repository/rugds.release.private"
 
   val publishSetting = publishTo <<= version { (v: String) =>
     if (v.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
