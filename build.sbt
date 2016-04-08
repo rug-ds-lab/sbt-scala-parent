@@ -12,7 +12,7 @@ lazy val sbtScalaParentProject = (project in file(".")).
   )
 
 
-val nexus     = "http://nexus.distributedsystems.nl:8081"
+val nexus     = "http://nexus.distributedsystems.nl"
 
 val snapshots = nexus + "/repository/rugds.snapshot.oss"
 val releases  = nexus + "/repository/rugds.release.oss"
@@ -28,8 +28,6 @@ publishArtifact in (Compile, packageSrc) := true
 publishArtifact in (Compile, packageDoc) := true
 
 publishMavenStyle := true
-
-crossPaths := true
 
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
