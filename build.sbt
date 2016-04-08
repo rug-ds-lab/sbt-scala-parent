@@ -29,6 +29,8 @@ publishArtifact in (Compile, packageDoc) := true
 
 publishMavenStyle := true
 
+overridePublishBothSettings
+
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // needed for play sbt plugin
