@@ -58,7 +58,7 @@ trait Dependencies {
 
 trait Repositories {
 
-  val nexus     = "http://nexus.distributedsystems.nl"
+  val nexus     = "http://nexus.rugds.org"
   val snapshots = nexus + "/repository/rugds.snapshot.private"
   val releases  = nexus + "/repository/rugds.release.private"
 
