@@ -35,7 +35,6 @@ trait ExternalSbtPluginsSettings {
   val nativePackagerSettings = Seq (
     maintainer in Docker := "RuG Distributed Systems <rug.ds.dev@gmail.com>",
     dockerBaseImage      := "rugdsdev/java-oracle-ubuntu:16.04-LTS-8u92-jre",
-    dockerExposedVolumes in Docker := Seq("/opt/docker/logs"),
 
     version in Docker := name.value + "-" + (version in ThisBuild).value,
     packageName in Docker := "private",
