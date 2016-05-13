@@ -6,21 +6,21 @@ import sbt.Keys._
 trait Dependencies {
   // versions
   val junitV          = "4.12"
-  val slf4jV          = "1.7.19"
-  val jodaTimeV       = "2.9.2"
+  val slf4jV          = "1.7.21"
+  val jodaTimeV       = "2.9.3"
   val jodaConvertV    = "1.8.1"
-  val logbackV        = "1.1.6"
+  val logbackV        = "1.1.7"
 
-  val akkaV           = "2.4.2"
+  val akkaV           = "2.4.4"
   val playV           = "2.5.0"
 
   val javaV           = "1.8"
   val scalaV          = "2.11.8"
-  val specsV          = "3.7.2"
+  val specsV          = "3.8.2"
   val scalaTestV      = "2.2.6"
   val typesafeConfigV = "1.3.0"
-  val grizzledLogV    = "1.0.2"
-  val scalaCheckV     = "1.13.0"
+  val grizzledLogV    = "1.0.4"
+  val scalaCheckV     = "1.13.1"
 
   // libraries
   val slf4j       = "org.slf4j" % "slf4j-api"    % slf4jV       
