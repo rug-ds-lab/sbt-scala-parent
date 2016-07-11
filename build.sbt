@@ -12,7 +12,7 @@ lazy val sbtScalaParentProject = (project in file(".")).
   )
 
 
-val nexus     = "http://nexus.rugds.org"
+val nexus     = "https://nexus.rugds.org"
 
 val snapshots = nexus + "/repository/rugds.snapshot.oss"
 val releases  = nexus + "/repository/rugds.release.oss"
