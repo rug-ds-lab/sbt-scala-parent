@@ -43,7 +43,7 @@ trait ExternalSbtPluginsSettings {
 
     dockerCommands ++= Seq(
       Cmd("USER", "root"),
-      ExecCmd("RUN", "usermod", "-d", "/opt/docker"),
+      ExecCmd("RUN", "usermod", "-d", "/opt/docker", "daemon"),
       Cmd("USER", "daemon")
     )
   )
