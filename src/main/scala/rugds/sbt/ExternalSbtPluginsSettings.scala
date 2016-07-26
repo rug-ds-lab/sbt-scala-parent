@@ -8,6 +8,7 @@ import sbtrelease.ReleasePlugin.autoImport.releaseTagName
 
 import com.typesafe.sbt.SbtNativePackager._
 import com.typesafe.sbt.packager.Keys._
+import com.typesafe.sbt.packager.docker._
 
 
 trait ExternalSbtPluginsSettings {
@@ -38,7 +39,13 @@ trait ExternalSbtPluginsSettings {
 
     version in Docker := name.value + "-" + (version in ThisBuild).value,
     packageName in Docker := "private",
-    dockerRepository in Docker := Some("rugdsdev")
+    dockerRepository in Docker := Some("rugdsdev"),
+
+    dockerCommands ++= Seq(
+      Cmd("USER", "root"),
+      ExecCmd("RUN", "usermod", "-d", "/opt/docker", "daemon"),
+      Cmd("USER", "daemon")
+    )
   )
 
   val pluginSettings = sbtReleaseSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
