@@ -13,9 +13,9 @@ import com.typesafe.sbt.packager.docker._
 
 trait ExternalSbtPluginsSettings {
 
-  val sbtReleaseSettings = (
+  val sbtReleaseSettings =
     releaseTagName <<= (version in ThisBuild) map (v => v)
-  )
+
 
   val sbtBuildInfoSettings = Seq (
     buildInfoKeys := Seq[BuildInfoKey](
@@ -37,15 +37,11 @@ trait ExternalSbtPluginsSettings {
     maintainer in Docker := "RuG Distributed Systems <rug.ds.dev@gmail.com>",
     dockerBaseImage      := "rugdsdev/java-oracle-ubuntu:16.04-LTS-8u92-jre",
 
+    daemonUser in Docker := "root",
+
     version in Docker := name.value + "-" + (version in ThisBuild).value,
     packageName in Docker := "private",
-    dockerRepository in Docker := Some("rugdsdev"),
-
-    dockerCommands ++= Seq(
-      Cmd("USER", "root"),
-      ExecCmd("RUN", "usermod", "-d", "/opt/docker", "daemon"),
-      Cmd("USER", "daemon")
-    )
+    dockerRepository in Docker := Some("rugdsdev")
   )
 
   val pluginSettings = sbtReleaseSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
