@@ -44,7 +44,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
     )).enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin)
   }
 
-  def mainProject = genericProject("root", ".", Seq(), false) settings (
+  def mainProject(name: String = "root") = genericProject(name, ".", Seq(), false) settings (
     publishLocal := {},
     publish      := {}
   )
