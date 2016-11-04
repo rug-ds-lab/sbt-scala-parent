@@ -98,9 +98,9 @@ trait DockerDevEnvironment {
       val networkId = "rugds-dev"
       envDockerDependencyTree.value.map {
         case (docker, dependencies) =>
-          val dockerPsCmd = s"docker ps -aq -f name=${docker.name}"; log.info(dockerPsCmd)
-          if (dockerPsCmd.!!.isEmpty) { // if it does not exist => run it
-          val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
+          val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
+          if (!dockerPsCmd.lines.contains(docker.name)) { // if it does not exist => run it
+            val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
             val dockerExposedPorts = dockerInspectCmd.!!
             val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
               case (port, _) => s"-p $port:$port"
