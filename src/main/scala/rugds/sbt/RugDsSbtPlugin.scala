@@ -33,15 +33,15 @@ trait CommonSettings {
   )
 }
 
-trait Projects extends Dependencies with Repositories with CommonSettings with ExternalSbtPluginsSettings {
+trait Projects extends Dependencies with Repositories with CommonSettings with ExternalSbtPluginsSettings with DockerDevEnvironment {
   private def logDependency(includeLog: Boolean) = if (includeLog) logViaLog4j else logViaLog4jTestOnly
 
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
-    Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ Seq(
+    Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ dockerDevSettings ++ Seq(
       resolvers ++= Seq(typesafeRepo, scalazRepo),
       libraryDependencies ++= finalDependencies
-    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin)
+    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin, RugDsSbtPlugin)
   }
 
   def mainProject(name: String = "root") = genericProject(name, ".", Seq(), false) settings (
