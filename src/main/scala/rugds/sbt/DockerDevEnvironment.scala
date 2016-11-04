@@ -100,7 +100,7 @@ trait DockerDevEnvironment {
         case (docker, dependencies) =>
           val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
           if (!dockerPsCmd.lines.contains(docker.name)) { // if it does not exist => run it
-            val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
+          val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
             val dockerExposedPorts = dockerInspectCmd.!!
             val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
               case (port, _) => s"-p $port:$port"
