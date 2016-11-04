@@ -18,126 +18,128 @@ trait DockerDevEnvironment {
   lazy val envDockerBuild           = taskKey[Set[EnvDocker]]("builds all project docker images (excluding sub-projects)")
 
 
-  val dockerDevSettings = {
-    def pluginSettings = Seq (
-      envProjectDependencyTree in Compile <<= (scalaVersion in Compile, scalaBinaryVersion in Compile, projectID in Compile, projectDependencyArtifacts in Compile, moduleGraph in Compile) map { (sV, sbV, pi, pda, mg) =>
-        val projectJarDependencies = pda.map(file =>
-          file.metadata.get(moduleID.key)
-            .map(m => CrossVersion(sV, sbV)(m))
-            .map(m => toEnvModule(m, Some(new JarFile(file.data.getAbsoluteFile))))
-            .getOrElse(throw new IllegalStateException(s"moduleId.key is not defined for $file")))
-        val projectId = toEnvModule(CrossVersion(sV, sbV)(pi))
-        val jarDependencies = mg.dependencyMap.toList.filter {
-          case (module, dependencies) => mg.module(module).isUsed // remove evicted modules
-        }.map {
-          case (module, dependencies) => {
-            val envModule = EnvModule(module.name, module.organisation, module.version, mg.module(module).jarFile.map(x => new JarFile(x)))
-            envModule -> dependencies
-              .filter(_.isUsed) // evicted modules should not be used!
-              .map(m => EnvModule(m.id.name, m.id.organisation, m.id.version, m.jarFile.map(x => new JarFile(x))))
-              .toSet
-          }
+  val dockerDevSettings = Seq (
+    envProjectDependencyTree := {
+      val sV  = scalaVersion.value
+      val sbV = scalaBinaryVersion.value
+      val mg  = (moduleGraph in Compile).value
+      val projectJarDependencies = projectDependencyArtifacts.value.map(file =>
+        file.metadata.get(moduleID.key)
+          .map(m => CrossVersion(sV, sbV)(m))
+          .map(m => toEnvModule(m, Some(new JarFile(file.data.getAbsoluteFile))))
+          .getOrElse(throw new IllegalStateException(s"moduleId.key is not defined for $file")))
+      val projectId = toEnvModule(CrossVersion(sV, sbV)(projectID.value))
+      val jarDependencies = mg.dependencyMap.toList.filter {
+        case (module, dependencies) => mg.module(module).isUsed // remove evicted modules
+      }.map {
+        case (module, dependencies) => {
+          val envModule = EnvModule(module.name, module.organisation, module.version, mg.module(module).jarFile.map(x => new JarFile(x)))
+          envModule -> dependencies
+            .filter(_.isUsed) // evicted modules should not be used!
+            .map(m => EnvModule(m.id.name, m.id.organisation, m.id.version, m.jarFile.map(x => new JarFile(x))))
+            .toSet
         }
-          .filter {
-            // remove dependencies that do not have docker (module)
-            case (module, dependencies) => module.jarFile.map(containsDockerDependency).getOrElse(true)
-          }
-          .map {
-            // remove dependencies that do not have docker (dependencies)
-            case (module, dependencies) => module -> dependencies.filter(_.jarFile.map(containsDockerDependency).getOrElse(true))
-          }
-          .map {
-            // replace project dependencies (with no jar) with its jar equivalents
-            case (module, dependencies) =>
-              val m = projectJarDependencies.find(_ == module).getOrElse(module)
-              val d = dependencies.map(dm => projectJarDependencies.find(_ == dm).getOrElse(dm))
-              m -> d
-          }
-          .filter {
-            // remove projects without jar
-            case (module, dependencies) => module.jarFile.isDefined
-          }
-          .map {
-            // remove projects without jar in dependencies
-            case (module, dependencies) => module -> dependencies.filter(_.jarFile.isDefined)
-          }
-        jarDependencies.map {
-          case (module, dependencies) => if (module == projectId) module -> ((jarDependencies.toMap.keySet ++ dependencies) - module) else module -> dependencies
-        }.sortWith {
-          case ((m1, d1), (m2, d2)) => d2.contains(m1) || !d1.contains(m2)
+      }
+        .filter {
+          // remove dependencies that do not have docker (module)
+          case (module, dependencies) => module.jarFile.map(containsDockerDependency).getOrElse(true)
         }
-      },
-
-      envDockerDependencyTree in Compile <<= (envProjectDependencyTree in Compile) map { _.flatMap {
-        case (module, dependencies) => module.toEnvDocker.map(_ -> dependencies.flatMap(_.toEnvDocker))
-      }},
-
-      envPullDockerImages in Compile <<= (envDockerDependencyTree in Compile, streams in Compile) map { (ddt, s) =>
-        ddt.map {
-          case (image, _) => image.toString
-        }
-          .map { image => {
-            s.log.info(s"docker images -q $image")
-            if (s"docker images -q $image".!!.isEmpty) {
-              s.log.info(s"docker pull $image")
-              if (s"docker pull $image".! != 0) {
-                throw new IllegalStateException(s"Cannot found or pull docker image: $image")
-              }
-            }
-            image
-          }}.toSet
-      },
-
-      envStartDev in Compile <<= (envDockerDependencyTree in Compile, envPullDockerImages in Compile, streams in Compile) map { (ddt, pdi, s) => {
-        //      val networkCmd = s"docker -P"
-        val networkId = "rugds-dev"
-        ddt.map {
-          case (docker, dependencies) =>
-            val dockerPsCmd = s"docker ps -aq -f name=${docker.name}"; s.log.info(dockerPsCmd)
-            if (dockerPsCmd.!!.isEmpty) { // if it does not exist => run it
-            val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); s.log.info(dockerInspectCmd.mkString(" "))
-              val dockerExposedPorts = dockerInspectCmd.!! // TODO: fix string delimiters
-              val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
-                case (port, _) => s"-p $port:$port"
-              }.mkString(" ")
-              val dockerRunCmd = s"docker run -d --network=$networkId $exposedPorts --name ${docker.name} ${docker.toString}"; s.log.info(dockerRunCmd)
-              dockerRunCmd.!!
-            }
-            docker
-        }.toSet
-      }},
-
-      envDockerList in Compile <<= (resources in Compile) map { _
-        .filter(_.isDirectory)
-        .filter(_.name == "docker-dependencies")
-        .flatMap(_.listFiles)
-        .flatMap(repo => {
-          repo.listFiles.map(image => {
-            val imageVersion = scala.io.Source.fromFile(image.getAbsolutePath + "/version").mkString
-            val dockerBuild  = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
-            EnvDocker(repo.name, image.name, imageVersion, dockerBuild)
-          })
-        })
-        .filter(_.file.isDefined)
-        .toSet
-      },
-
-      envDockerBuild in Compile <<= (envDockerList in Compile, streams in Compile) map { (dockerList, s) => dockerList
-        .map(docker => (docker, docker.file.get)) // we can safely do get here (envDockerList ensure it is defined!)
         .map {
-        case (docker, file) =>
-          val dockerCommand = s"docker build . -t $docker"; s.log.info(dockerCommand)
-          if (Process(s"docker build . -t $docker", cwd = file).! != 0) {
-            s.log.error(s"docker build command failed: $docker")
-          } else {
-            s.log.info(s"docker build successful for image: $docker")
+          // remove dependencies that do not have docker (dependencies)
+          case (module, dependencies) => module -> dependencies.filter(_.jarFile.map(containsDockerDependency).getOrElse(true))
+        }
+        .map {
+          // replace project dependencies (with no jar) with its jar equivalents
+          case (module, dependencies) =>
+            val m = projectJarDependencies.find(_ == module).getOrElse(module)
+            val d = dependencies.map(dm => projectJarDependencies.find(_ == dm).getOrElse(dm))
+            m -> d
+        }
+        .filter {
+          // remove projects without jar
+          case (module, dependencies) => module.jarFile.isDefined
+        }
+        .map {
+          // remove projects without jar in dependencies
+          case (module, dependencies) => module -> dependencies.filter(_.jarFile.isDefined)
+        }
+      jarDependencies.map {
+        case (module, dependencies) => if (module == projectId) module -> ((jarDependencies.toMap.keySet ++ dependencies) - module) else module -> dependencies
+      }.sortWith {
+        case ((m1, d1), (m2, d2)) => d2.contains(m1) || !d1.contains(m2)
+      }
+    },
+
+    envDockerDependencyTree := envProjectDependencyTree.value.flatMap {
+      case (module, dependencies) => module.toEnvDocker.map(_ -> dependencies.flatMap(_.toEnvDocker))
+    },
+
+    envPullDockerImages := {
+      val log = streams.value.log
+      envDockerDependencyTree.value.map {
+        case (image, _) => image.toString
+      }
+      .map { image => {
+        log.info(s"docker images -q $image")
+        if (s"docker images -q $image".!!.isEmpty) {
+          log.info(s"docker pull $image")
+          if (s"docker pull $image".! != 0) {
+            throw new IllegalStateException(s"Cannot found or pull docker image: $image")
+          }
+        }
+        image
+      }}.toSet
+    },
+
+    envStartDev := {
+      val log = streams.value.log
+      val pdi = envPullDockerImages.value
+//      val networkCmd = s"docker -P" // TODO: auto-create network if not yet created (or fail if exists?)
+      val networkId = "rugds-dev"
+      envDockerDependencyTree.value.map {
+        case (docker, dependencies) =>
+          val dockerPsCmd = s"docker ps -aq -f name=${docker.name}"; log.info(dockerPsCmd)
+          if (dockerPsCmd.!!.isEmpty) { // if it does not exist => run it
+          val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
+            val dockerExposedPorts = dockerInspectCmd.!!
+            val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
+              case (port, _) => s"-p $port:$port"
+            }.mkString(" ")
+            val dockerRunCmd = s"docker run -d --network=$networkId $exposedPorts --name ${docker.name} ${docker.toString}"; log.info(dockerRunCmd)
+            dockerRunCmd.!!
           }
           docker
-      }}
-    )
+      }.toSet
+    },
 
-  }
+    envDockerList := (resources in Compile).value
+      .filter(_.isDirectory)
+      .filter(_.name == "docker-dependencies")
+      .flatMap(_.listFiles)
+      .flatMap(repo => {
+        repo.listFiles.map(image => {
+          val imageVersion = scala.io.Source.fromFile(image.getAbsolutePath + "/version").mkString
+          val dockerBuild  = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
+          EnvDocker(repo.name, image.name, imageVersion, dockerBuild)
+        })
+      })
+      .filter(_.file.isDefined)
+      .toSet,
 
+    envDockerBuild := envDockerList.value
+      .map(docker => (docker, docker.file.get)) // we can safely do get here (envDockerList ensure it is defined!)
+      .map {
+        case (docker, file) =>
+          val log = streams.value.log
+          val dockerCommand = s"docker build . -t $docker"; log.info(dockerCommand)
+          if (Process(s"docker build . -t $docker", cwd = file).! != 0) {
+            log.error(s"docker build command failed: $docker")
+          } else {
+            log.info(s"docker build successful for image: $docker")
+          }
+          docker
+      }
+  )
 
   private def containsDockerDependency(jarFile: JarFile): Boolean = {
     !jarFile.entries.toSeq

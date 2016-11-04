@@ -8,13 +8,11 @@ import sbtrelease.ReleasePlugin.autoImport.releaseTagName
 
 import com.typesafe.sbt.SbtNativePackager._
 import com.typesafe.sbt.packager.Keys._
-import com.typesafe.sbt.packager.docker._
 
 
 trait ExternalSbtPluginsSettings {
 
-  val sbtReleaseSettings =
-    releaseTagName <<= (version in ThisBuild) map (v => v)
+  val sbtReleaseSettings = releaseTagName := (version in ThisBuild).value map (v => v)
 
 
   val sbtBuildInfoSettings = Seq (
@@ -28,7 +26,7 @@ trait ExternalSbtPluginsSettings {
         System.currentTimeMillis
       }
     ),
-    buildInfoPackage <<= name { _.replace("-", "") },
+    buildInfoPackage := name.value.replace("-", ""),
     buildInfoOptions += BuildInfoOption.ToMap,
     buildInfoOptions += BuildInfoOption.ToJson
   )

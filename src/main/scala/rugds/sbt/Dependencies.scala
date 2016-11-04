@@ -62,8 +62,8 @@ trait Repositories {
   val snapshots = nexus + "/repository/rugds.snapshot.private"
   val releases  = nexus + "/repository/rugds.release.private"
 
-  val publishSetting = publishTo <<= version { (v: String) =>
-    if (v.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
+  val publishSetting = publishTo := {
+    if (version.value.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
   }
 
   val repositories = Seq(
