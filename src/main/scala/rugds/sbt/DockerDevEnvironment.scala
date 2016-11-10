@@ -43,11 +43,11 @@ trait DockerDevEnvironment {
       }
       .filter {
         // remove dependencies that do not have docker (module)
-        case (module, dependencies) => module.jarFile.map(containsDockerDependency).getOrElse(true)
+        case (module, dependencies) => module.jarFile.forall(containsDockerDependency)
       }
       .map {
         // remove dependencies that do not have docker (dependencies)
-        case (module, dependencies) => module -> dependencies.filter(_.jarFile.map(containsDockerDependency).getOrElse(true))
+        case (module, dependencies) => module -> dependencies.filter(_.jarFile.forall(containsDockerDependency))
       }
       .map {
         // replace project dependencies (with no jar) with its jar equivalents
