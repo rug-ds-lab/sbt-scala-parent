@@ -169,5 +169,8 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
 }
 
 case class EnvDocker(repo: String, name: String, tag: String, file: Option[File] = None) { // file is defined if there is Dockerfile, otherwise it represents "pure" dependency
-  override def toString: String = s"$repo/$name:$tag"
+  override def toString: String = repo match {
+    case "library" => s"$name:$tag"
+    case r         => s"$r/$name:$tag"
+  }
 }
