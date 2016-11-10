@@ -102,7 +102,7 @@ trait DockerDevEnvironment {
             val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
             val dockerExposedPorts = dockerInspectCmd.!!
             val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
-              case (port, _) => s"-p $port:$port"
+              case (port, protocol) => s"-p $port:$port/$protocol"
             }.mkString(" ")
             val dockerRunCmd = s"docker run -d --network=$networkId $exposedPorts --name ${docker.name} ${docker.toString}"; log.info(dockerRunCmd)
             dockerRunCmd.!!
