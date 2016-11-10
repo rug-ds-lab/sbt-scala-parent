@@ -33,13 +33,12 @@ trait DockerDevEnvironment {
         case (module, dependencies) => mg.module(module).isUsed // remove evicted modules
       }
       .map {
-        case (module, dependencies) => {
+        case (module, dependencies) =>
           val envModule = EnvModule(module.name, module.organisation, module.version, mg.module(module).jarFile.map(x => new JarFile(x)))
           envModule -> dependencies
             .filter(_.isUsed) // evicted modules should not be used!
             .map(m => EnvModule(m.id.name, m.id.organisation, m.id.version, m.jarFile.map(x => new JarFile(x))))
             .toSet
-        }
       }
       .filter {
         // remove dependencies that do not have docker (module)
@@ -141,12 +140,9 @@ trait DockerDevEnvironment {
       }
   )
 
-  private def containsDockerDependency(jarFile: JarFile): Boolean = {
-    !jarFile.entries.toSeq
-      .filter(_.getName.startsWith("docker-dependencies"))
-      .filter(_.getName.endsWith("version"))
-      .isEmpty  // we just check now if it exists (ignoring the actual dependency, to see if it works)
-  }
+  private def containsDockerDependency(jarFile: JarFile): Boolean = jarFile.entries.toSeq
+    .filter(_.getName.startsWith("docker-dependencies"))
+    .exists(_.getName.endsWith("version")) // we just check now if it exists (ignoring the actual dependency, to see if it works)
 
   private def toEnvModule(module: ModuleID, jarFile: Option[JarFile] = None): EnvModule = EnvModule(module.name, module.organization, module.revision, jarFile)
 }
