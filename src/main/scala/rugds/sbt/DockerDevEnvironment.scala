@@ -223,7 +223,6 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
     .filter(_.getName.endsWith("rugds-env.conf"))
     .map(file => {
       val image = file.getName.split('/').toSeq.init.tail.mkString("/") // remove head (docker-dependencies) and last (version)
-//      val dockerVersion = scala.io.Source.fromInputStream(x.getInputStream(file), "UTF-8").mkString.trim
       val envConfig = ConfigFactory.parseString(scala.io.Source.fromInputStream(x.getInputStream(file), "UTF-8").mkString)
 
       EnvDocker(image.split('/').head, image.split('/').last, envConfig)
@@ -235,7 +234,7 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
 case class EnvDocker(repo: String, name: String, envConfig: Config, file: Option[File] = None) { // file is defined if there is Dockerfile, otherwise it represents "pure" dependency
   private val ns = "rugds.environment"
 
-  val tag     = envConfig.getString(s"$ns.version")
+  val tag     = envConfig.getString(s"$ns.tag")
   val options = Try[String] { envConfig.getString(s"$ns.options") }.getOrElse("")
 
   override def toString: String = repo match {
