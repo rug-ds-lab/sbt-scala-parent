@@ -177,7 +177,6 @@ trait DockerDevEnvironment {
       .flatMap(_.listFiles)
       .flatMap(repo => {
         repo.listFiles.map(image => {
-//          val imageVersion = scala.io.Source.fromFile(image.getAbsolutePath + "/version").mkString
           val envConfig = ConfigFactory.load(image.getAbsolutePath + "/rugds-env.conf")
 
           val dockerBuild  = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
