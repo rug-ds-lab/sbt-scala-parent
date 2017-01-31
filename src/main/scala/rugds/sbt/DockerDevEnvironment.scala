@@ -12,11 +12,17 @@ trait DockerDevEnvironment {
   lazy val envProjectDependencyTree = taskKey[Seq[(EnvModule, Set[EnvModule])]]("tree of all project dependencies starting from root")
   lazy val envDockerDependencyTree  = taskKey[Seq[(EnvDocker, Set[EnvDocker])]]("tree of all docker dependencies starting from root")
   lazy val envPullDockerImages      = taskKey[Set[String]]   ("pulls all docker images from the central repository")
-  lazy val envStartDev              = taskKey[Set[EnvDocker]]("start development environment") // single vm (localhost by default?) single instance for each image, links between containers for dependencies (we should probably be more careful for jars, and build a tree of docker files, not just list as of now)
+
+  // single vm (localhost by default?) single instance for each image, links between containers for dependencies (we should probably be more careful for jars, and build a tree of docker files, not just list as of now)
+  lazy val envCreateDev             = taskKey[Set[EnvDocker]]("create development environment")
+  lazy val envStartDev              = taskKey[Set[EnvDocker]]("start development environment")
+  lazy val envStopDev               = taskKey[Set[EnvDocker]]("stop development environment")
+  lazy val envRemoveDev             = taskKey[Set[EnvDocker]]("removes development environment")
 
   lazy val envDockerList            = taskKey[Set[EnvDocker]]("list of project docker images (with Dockerfile defined)")
   lazy val envDockerBuild           = taskKey[Set[EnvDocker]]("builds all project docker images (excluding sub-projects)")
 
+  private val networkId = "rugds-dev"
 
   val dockerDevSettings = Seq (
     envProjectDependencyTree := {
@@ -90,25 +96,74 @@ trait DockerDevEnvironment {
       }}.toSet
     },
 
-    envStartDev := {
+    envCreateDev := {
       val log = streams.value.log
-      val pdi = envPullDockerImages.value
-//      val networkCmd = s"docker -P" // TODO: auto-create network if not yet created (or fail if exists?)
-      val networkId = "rugds-dev"
+      val pdi = envPullDockerImages.value // Why is this here?
+
+      val networkLsCmd = Seq("docker", "network", "ls", "--format", "{{ .Name }}"); log.info(networkLsCmd.mkString(" "))
+      if(!networkLsCmd.lines.contains(networkId)) { // if it does not exist => create it
+        val networkCreateCmd = Seq("docker", "network", "create", networkId); log.info(networkCreateCmd.mkString(" "))
+        networkCreateCmd.!!
+      }
+
       envDockerDependencyTree.value.map {
         case (docker, dependencies) =>
           val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
-          if (!dockerPsCmd.lines.contains(docker.name)) { // if it does not exist => run it
+          if (!dockerPsCmd.lines.contains(docker.name)) { // if it does not exist => create it
             val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
             val dockerExposedPorts = dockerInspectCmd.!!
             val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
               case (port, protocol) => s"-p $port:$port/$protocol"
             }.mkString(" ")
-            val dockerRunCmd = s"docker run -d --network=$networkId $exposedPorts --name ${docker.name} ${docker.toString}"; log.info(dockerRunCmd)
+            val dockerRunCmd = s"docker create --network=$networkId $exposedPorts --name ${docker.name} ${docker.toString}"; log.info(dockerRunCmd)
             dockerRunCmd.!!
           }
           docker
       }.toSet
+    },
+
+    envStartDev := {
+      val log = streams.value.log
+      envDockerDependencyTree.value.map {
+        case (docker, dependencies) =>
+          val dockerRunCmd = s"docker start ${docker.name}"; log.info(dockerRunCmd)
+          dockerRunCmd.!!
+          docker
+      }.toSet
+    },
+
+    envStopDev := {
+      val log = streams.value.log
+      envDockerDependencyTree.value.reverse.map {
+        case (docker, dependencies) =>
+          val dockerRunCmd = s"docker stop ${docker.name}"; log.info(dockerRunCmd)
+          dockerRunCmd.!!
+          docker
+      }.toSet
+    },
+
+    envRemoveDev := {
+      val log = streams.value.log
+      val pdi = envPullDockerImages.value // Why is this here?
+
+      val result = envDockerDependencyTree.value.map {
+        case (docker, dependencies) =>
+          val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
+          if (dockerPsCmd.lines.contains(docker.name)) { // if it does exist => remove it
+            // TODO: Dangling volumes and images?
+            val dockerRunCmd = s"docker rm ${docker.name}"; log.info(dockerRunCmd)
+            dockerRunCmd.!!
+          }
+          docker
+      }.toSet
+
+      val networkLsCmd = Seq("docker", "network", "ls", "--format", "{{ .Name }}"); log.info(networkLsCmd.mkString(" "))
+      if(networkLsCmd.lines.contains(networkId)) { // if it does exist => remove it
+        val networkRmCmd = Seq("docker", "network", "rm", networkId); log.info(networkRmCmd.mkString(" "))
+        networkRmCmd.!!
+      }
+
+      result
     },
 
     envDockerList := (resources in Compile).value
