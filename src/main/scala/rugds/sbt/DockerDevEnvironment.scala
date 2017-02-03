@@ -103,7 +103,7 @@ trait DockerDevEnvironment {
 
     envCreateDev := {
       val log = streams.value.log
-      val pdi = envPullDockerImages.value // Why is this here?
+      val pdi = envPullDockerImages.value // Forces Docker images to be pulled (downloaded)
 
       val networkLsCmd = Seq("docker", "network", "ls", "--format", "{{ .Name }}"); log.info(networkLsCmd.mkString(" "))
       if(!networkLsCmd.lines.contains(networkId)) { // if it does not exist => create it
@@ -149,7 +149,6 @@ trait DockerDevEnvironment {
 
     envRemoveDev := {
       val log = streams.value.log
-      val pdi = envPullDockerImages.value // Why is this here?
 
       val result = envDockerDependencyTree.value.reverse.map {
         case (docker, dependencies) =>
@@ -177,7 +176,7 @@ trait DockerDevEnvironment {
       .flatMap(_.listFiles)
       .flatMap(repo => {
         repo.listFiles.map(image => {
-          val envConfig = ConfigFactory.load(image.getAbsolutePath + "/rugds-env.conf")
+          val envConfig = ConfigFactory.load(image.getAbsolutePath + "/env.conf")
 
           val dockerBuild  = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
           EnvDocker(repo.name, image.name, envConfig, dockerBuild)
@@ -203,7 +202,7 @@ trait DockerDevEnvironment {
 
   private def containsDockerDependency(jarFile: JarFile): Boolean = jarFile.entries.toSeq
     .filter(_.getName.startsWith("docker-dependencies"))
-    .exists(_.getName.endsWith("rugds-env.conf")) // we just check now if it exists (ignoring the actual dependency, to see if it works)
+    .exists(_.getName.endsWith("env.conf")) // we just check now if it exists (ignoring the actual dependency, to see if it works)
 
   private def toEnvModule(module: ModuleID, jarFile: Option[JarFile] = None): EnvModule = EnvModule(module.name, module.organization, module.revision, jarFile)
 }
@@ -219,7 +218,7 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
 
   def toEnvDocker: Seq[EnvDocker] = jarFile.map(x => x.entries.toSeq
     .filter(_.getName.startsWith("docker-dependencies"))
-    .filter(_.getName.endsWith("rugds-env.conf"))
+    .filter(_.getName.endsWith("env.conf"))
     .map(file => {
       val image = file.getName.split('/').toSeq.init.tail.mkString("/") // remove head (docker-dependencies) and last (version)
       val envConfig = ConfigFactory.parseString(scala.io.Source.fromInputStream(x.getInputStream(file), "UTF-8").mkString)
@@ -231,7 +230,7 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
 }
 
 case class EnvDocker(repo: String, name: String, envConfig: Config, file: Option[File] = None) { // file is defined if there is Dockerfile, otherwise it represents "pure" dependency
-  private val ns = "rugds.environment"
+  private val ns = "environment"
 
   val tag     = envConfig.getString(s"$ns.tag")
   val options = Try[String] { envConfig.getString(s"$ns.options") }.getOrElse("")
