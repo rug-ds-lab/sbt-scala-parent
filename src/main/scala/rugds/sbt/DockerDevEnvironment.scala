@@ -176,9 +176,9 @@ trait DockerDevEnvironment {
       .flatMap(_.listFiles)
       .flatMap(repo => {
         repo.listFiles.map(image => {
-          val envConfig = ConfigFactory.load(image.getAbsolutePath + "/env.conf")
-
-          val dockerBuild  = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
+          val configFile  = new File(image.getAbsolutePath + "/env.conf")
+          val envConfig   = ConfigFactory.parseFile(configFile)
+          val dockerBuild = if (new File(image.getAbsolutePath + "/Dockerfile").exists()) Some(image) else None
           EnvDocker(repo.name, image.name, envConfig, dockerBuild)
         })
       })
