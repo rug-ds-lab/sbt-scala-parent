@@ -42,5 +42,5 @@ trait ExternalSbtPluginsSettings {
     dockerRepository in Docker := Some("rugdsdev")
   )
 
-  val pluginSettings = sbtReleaseSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
+  val pluginSettings: Seq[Setting[_]] = sbtReleaseSettings ++ sbtBuildInfoSettings ++ nativePackagerSettings
 }
