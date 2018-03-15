@@ -8,18 +8,18 @@ trait Dependencies {
   val junitV          = "4.12"
   val slf4jV          = "1.7.25"
   val jodaTimeV       = "2.9.9"
-  val jodaConvertV    = "1.8.1"
+  val jodaConvertV    = "2.0.1"
   val logbackV        = "1.2.3"
 
-  val akkaV           = "2.4.17"
-  val playV           = "2.5.14"
+  val akkaV           = "2.5.11"
+  val playV           = "2.6.12"
 
   val javaV           = "1.8"
-  val scalaV          = "2.11.11"
-  val specsV          = "3.8.9"
-  val scalaTestV      = "3.0.1"
-  val typesafeConfigV = "1.3.1"
-  val grizzledLogV    = "1.3.0"
+  val scalaV          = "2.12.4"
+  val specsV          = "4.0.3"
+  val scalaTestV      = "3.0.5"
+  val typesafeConfigV = "1.3.3"
+  val grizzledLogV    = "1.3.2"
   val scalaCheckV     = "1.13.5"
 
   // libraries
