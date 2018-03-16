@@ -6,7 +6,8 @@ import java.util.jar._
 
 import com.typesafe.config.{Config, ConfigFactory}
 
-import scala.collection.JavaConversions._
+import scala.sys.process._
+import scala.collection.JavaConverters._
 import net.virtualvoid.sbt.graph.DependencyGraphKeys._
 import com.typesafe.sbt.packager.archetypes.JavaAppPackaging.autoImport.projectDependencyArtifacts
 
@@ -106,7 +107,7 @@ trait DockerDevEnvironment {
       val pdi = envPullDockerImages.value // Forces Docker images to be pulled (downloaded)
 
       val networkLsCmd = Seq("docker", "network", "ls", "--format", "{{ .Name }}"); log.info(networkLsCmd.mkString(" "))
-      if(!networkLsCmd.lines.contains(networkId)) { // if it does not exist => create it
+      if(!networkLsCmd.lineStream.contains(networkId)) { // if it does not exist => create it
         val networkCreateCmd = Seq("docker", "network", "create", networkId); log.info(networkCreateCmd.mkString(" "))
         networkCreateCmd.!!
       }
@@ -114,7 +115,7 @@ trait DockerDevEnvironment {
       envDockerDependencyTree.value.map {
         case (docker, dependencies) =>
           val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
-          if (!dockerPsCmd.lines.contains(docker.name)) { // if it does not exist => create it
+          if (!dockerPsCmd.lineStream.contains(docker.name)) { // if it does not exist => create it
             val dockerInspectCmd = Seq("docker", "inspect", "-f", "{{range $key, $item := .Config.ExposedPorts}}{{$key}} {{end}}", docker.toString); log.info(dockerInspectCmd.mkString(" "))
             val dockerExposedPorts = dockerInspectCmd.!!
             val exposedPorts = dockerExposedPorts.trim.split(' ').map(port => port.split('/')).map(list => (list.head, list.last)).map {
@@ -153,7 +154,7 @@ trait DockerDevEnvironment {
       val result = envDockerDependencyTree.value.reverse.map {
         case (docker, dependencies) =>
           val dockerPsCmd = Seq("docker", "ps", "-aq", "--format", "{{ .Names}}"); log.info(dockerPsCmd.mkString(" "))
-          if (dockerPsCmd.lines.contains(docker.name)) { // if it does exist => remove it
+          if (dockerPsCmd.lineStream.contains(docker.name)) { // if it does exist => remove it
             // TODO: Dangling volumes and images?
             val dockerRunCmd = s"docker rm ${docker.name}"; log.info(dockerRunCmd)
             dockerRunCmd.!!
@@ -162,7 +163,7 @@ trait DockerDevEnvironment {
       }.toSet
 
       val networkLsCmd = Seq("docker", "network", "ls", "--format", "{{ .Name }}"); log.info(networkLsCmd.mkString(" "))
-      if(networkLsCmd.lines.contains(networkId)) { // if it does exist => remove it
+      if(networkLsCmd.lineStream.contains(networkId)) { // if it does exist => remove it
         val networkRmCmd = Seq("docker", "network", "rm", networkId); log.info(networkRmCmd.mkString(" "))
         networkRmCmd.!!
       }
@@ -200,7 +201,7 @@ trait DockerDevEnvironment {
       }
   )
 
-  private def containsDockerDependency(jarFile: JarFile): Boolean = jarFile.entries.toSeq
+  private def containsDockerDependency(jarFile: JarFile): Boolean = jarFile.entries.asScala.toSeq
     .filter(_.getName.startsWith("docker-dependencies"))
     .exists(_.getName.endsWith("env.conf")) // we just check now if it exists (ignoring the actual dependency, to see if it works)
 
@@ -216,7 +217,7 @@ case class EnvModule(name: String, organization: String, version: String, jarFil
   }
   override def hashCode(): Int = name.hashCode + organization.hashCode + version.hashCode
 
-  def toEnvDocker: Seq[EnvDocker] = jarFile.map(x => x.entries.toSeq
+  def toEnvDocker: Seq[EnvDocker] = jarFile.map(x => x.entries.asScala.toSeq
     .filter(_.getName.startsWith("docker-dependencies"))
     .filter(_.getName.endsWith("env.conf"))
     .map(file => {

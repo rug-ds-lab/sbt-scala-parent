@@ -38,10 +38,15 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
 
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
     val finalDependencies = dependencies ++ logDependency(includeLog)
-    Project(name, file(basedir), settings = pluginSettings ++ commonSettings ++ dockerDevSettings ++ Seq(
-      resolvers ++= Seq(typesafeRepo, scalazRepo),
-      libraryDependencies ++= finalDependencies
-    )).enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin, RugDsSbtPlugin)
+    Project(name, file(basedir))
+      .enablePlugins(JavaAppPackaging, BuildInfoPlugin, ReleasePlugin, RugDsSbtPlugin)
+      .settings(
+        libraryDependencies ++= finalDependencies,
+        pluginSettings,
+        commonSettings,
+        dockerDevSettings,
+        resolvers ++= Seq(typesafeRepo, scalazRepo)
+      )
   }
 
   def mainProject(name: String = "root") = genericProject(name, ".", Seq(), false) settings (
