@@ -1,0 +1,30 @@
+defaults: &defaults
+  working_directory: ~/workspace/sbt-scala-parent
+  docker:
+    - image: rugdsdev/circleci-base-image:scala-2.12.6-sbt-1.2.1
+
+version: 2
+jobs:
+  compile:
+    <<: *defaults
+    steps:      
+      - checkout
+      - restore_cache:
+          key: sbt-v1-{{ .Branch }}
+      - run:
+          command: sbt clean compile
+      - save_cache:
+          key: sbt-v1-{{ .Branch }}
+          paths:
+            - "~/.ivy2/cache"
+            - "~/.sbt"
+            - "~/.m2"
+            
+workflows:
+  version: 2
+  main:
+    jobs:
+      - compile:
+          filters:
+            tags: # all tags
+              only: /.*/
