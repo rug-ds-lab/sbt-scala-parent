@@ -3,7 +3,7 @@ lazy val sbtScalaParentProject = (project in file(".")).
   settings(
     name := "sbt-scala-parent",
     organization := "rugds",
-    scalaVersion := "2.12.6",
+    scalaVersion := "2.12.8",
     sbtPlugin := true,
 
     // buildinfo plugin
@@ -37,15 +37,15 @@ resolvers ++= Seq (
   "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 )
 
-addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.6.18")
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.7.3")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.3.4")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.2")
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.9")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.11")
 
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.9.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.7")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.25")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
 
