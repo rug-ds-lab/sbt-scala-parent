@@ -15,7 +15,7 @@ trait Dependencies {
   val playV           = "2.8.1"
 
   val javaV           = "1.8"
-  val scalaV          = "2.13.0"
+  val scalaV          = "2.12.10"
   val specsV          = "4.8.3"
   val scalaTestV      = "3.1.0"
   val typesafeConfigV = "1.4.0"
