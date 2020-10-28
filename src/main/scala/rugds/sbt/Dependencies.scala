@@ -72,6 +72,6 @@ trait Repositories {
   )
 
   // external repositories
-  val typesafeRepo = "typesafe"            at "http://repo.typesafe.com/typesafe/releases"
+  val typesafeRepo = "typesafe"            at "https://repo.typesafe.com/typesafe/releases"
   val scalazRepo   = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 }
