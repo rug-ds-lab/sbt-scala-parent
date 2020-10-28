@@ -33,7 +33,7 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // needed for play sbt plugin
 resolvers ++= Seq (
-  "typesafe"            at "http://repo.typesafe.com/typesafe/releases",
+  "typesafe"            at "https://repo.typesafe.com/typesafe/releases",
   "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 )
 
