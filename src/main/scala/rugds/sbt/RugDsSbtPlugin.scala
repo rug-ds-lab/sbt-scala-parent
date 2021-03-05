@@ -15,7 +15,6 @@ trait CommonSettings {
     javacOptions ++= Seq("-source", s"$javaV"),
     javacOptions in doc := Seq("-source", s"$javaV"),
     scalacOptions ++= Seq(
-      s"-target:jvm-$javaV", // enforce java8 in scala
       "-deprecation",
       "-encoding", "UTF-8",
       "-feature",    // warning and location for usages of features that should be imported explicitly
