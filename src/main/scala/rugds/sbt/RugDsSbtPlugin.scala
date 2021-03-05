@@ -1,7 +1,6 @@
 package rugds.sbt
 
 import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
-import play.sbt.PlayScala
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin
@@ -33,7 +32,7 @@ trait CommonSettings {
   )
 }
 
-trait Projects extends Dependencies with Repositories with CommonSettings with ExternalSbtPluginsSettings with DockerDevEnvironment {
+trait Projects extends Dependencies with Repositories with CommonSettings with ExternalSbtPluginsSettings {
   private def logDependency(includeLog: Boolean) = if (includeLog) logViaLog4j else logViaLog4jTestOnly
 
   private def genericProject(name: String, basedir: String, dependencies: Seq[ModuleID], includeLog: Boolean) = {
@@ -43,9 +42,7 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
       .settings(
         libraryDependencies ++= finalDependencies,
         pluginSettings,
-        commonSettings,
-        dockerDevSettings,
-        resolvers ++= Seq(typesafeRepo, scalazRepo)
+        commonSettings
       )
   }
 
@@ -53,11 +50,9 @@ trait Projects extends Dependencies with Repositories with CommonSettings with E
     publishLocal := {},
     publish      := {}
   )
-  def javaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, javaOnly,          includeLog)
-  def scalaProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, scalaBasic,        includeLog)
-  def akkaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, akkaDependencies,  includeLog)
-  def playProject (name: String, basedir: String = ".", includeLog: Boolean = false) = scalaProject  (name, basedir, includeLog).enablePlugins(PlayScala)
-
+  def javaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, javaOnly,         includeLog)
+  def scalaProject(name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, scalaBasic,       includeLog)
+  def akkaProject (name: String, basedir: String = ".", includeLog: Boolean = false) = genericProject(name, basedir, akkaDependencies, includeLog)
 
   def defineProject(projectType: (String, String, Boolean) => Project, projectName: String, includeLog: Boolean = false) = {
     projectType(projectName, projectName, includeLog)

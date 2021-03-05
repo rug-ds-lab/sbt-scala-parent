@@ -5,22 +5,21 @@ import sbt.Keys._
 
 trait Dependencies {
   // versions
-  val junitV          = "4.13"
+  val junitV          = "4.13.2"
   val slf4jV          = "1.7.30"
-  val jodaTimeV       = "2.10.5"
+  val jodaTimeV       = "2.10.10"
   val jodaConvertV    = "2.2.1"
   val logbackV        = "1.2.3"
 
   val akkaV           = "2.6.3"
-  val playV           = "2.8.1"
 
-  val javaV           = "1.8"
-  val scalaV          = "2.12.10"
-  val specsV          = "4.8.3"
-  val scalaTestV      = "3.1.0"
-  val typesafeConfigV = "1.4.0"
+  val javaV           = "15"
+  val scalaV          = "2.12.13"
+  val specsV          = "4.10.6"
+  val scalaTestV      = "3.2.5"
+  val typesafeConfigV = "1.4.1"
   val grizzledLogV    = "1.3.4"
-  val scalaCheckV     = "1.14.3"
+  val scalaCheckV     = "1.15.3"
 
   // libraries
   val slf4j       = "org.slf4j" % "slf4j-api"    % slf4jV       
@@ -37,9 +36,6 @@ trait Dependencies {
 
   val typesafeConfig = "com.typesafe" %  "config"         % typesafeConfigV 
   val grizzledLog    = "org.clapper"  %% "grizzled-slf4j" % grizzledLogV    
-
-  // play sbt plugin
-  val playPlugin = "com.typesafe.play" %  "sbt-plugin"  % playV  
 
   // test libraries
   val junit      = "junit"          %  "junit"        % junitV      % Test 
@@ -63,15 +59,12 @@ trait Repositories {
   val releases  = nexus + "/repository/rugds.release.private"
 
   val publishSetting = publishTo := {
-    if (version.value.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
+    val repo = if (version.value.trim.contains("-")) Some("snapshots" at snapshots) else Some("releases" at releases)
+    repo.map(_.withAllowInsecureProtocol(true))
   }
 
   val repositories = Seq(
     "RugDS Snapshots" at snapshots,
     "RugDS Releases"  at releases
-  )
-
-  // external repositories
-  val typesafeRepo = "typesafe"            at "https://repo.typesafe.com/typesafe/releases"
-  val scalazRepo   = "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
+  ).map(_.withAllowInsecureProtocol(true))
 }
