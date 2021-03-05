@@ -12,7 +12,7 @@ trait CommonSettings {
 
   val commonSettings = Seq(
     organization  := "rugds",
-    javacOptions ++= Seq("-source", s"$javaV", "-target", s"$javaV"),
+    javacOptions ++= Seq("-source", s"$javaV"),
     javacOptions in doc := Seq("-source", s"$javaV"),
     scalacOptions ++= Seq(
       s"-target:jvm-$javaV", // enforce java8 in scala
