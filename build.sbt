@@ -3,7 +3,7 @@ lazy val sbtScalaParentProject = (project in file(".")).
   settings(
     name := "sbt-scala-parent",
     organization := "rugds",
-    scalaVersion := "2.12.13",
+    scalaVersion := "2.12.18",
     sbtPlugin := true,
 
     // buildinfo plugin
@@ -40,13 +40,13 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 //addSbtPlugin("com.typesafe.play" %  "sbt-plugin" % "2.8.1") // removing support of play
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.1")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.4")
 
-addSbtPlugin("com.github.sbt" % "sbt-release" % "1.0.15")
+addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.10.0")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.11.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.8.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.8.1")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
 

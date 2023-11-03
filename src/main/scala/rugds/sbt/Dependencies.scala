@@ -14,7 +14,7 @@ trait Dependencies {
   val akkaV           = "2.6.3"
 
   val javaV           = "15"
-  val scalaV          = "2.12.13"
+  val scalaV          = "2.12.18"
   val specsV          = "4.10.6"
   val scalaTestV      = "3.2.5"
   val typesafeConfigV = "1.4.1"
